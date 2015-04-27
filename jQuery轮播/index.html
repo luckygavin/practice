@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>轮播</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<div class="main">
+		<div class="pic">
+			<img src="img/1.jpg" />
+			<img src="img/2.jpg" />
+			<img src="img/3.jpg" />
+			<img src="img/4.jpg" />
+			<img src="img/5.jpg" />
+		</div>
+		<div class="button">
+			<ul>
+				<li class="on">1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+				<li>5</li>
+			</ul>
+		</div>
+		<div class="go left"><</div>
+		<div class="go right">></div>
+	</div>
+	
+	<script type="text/javascript" src="jquery-1.11.2.min.js"></script>
+	<script type="text/javascript">
+		/* 点切换 */
+		$(".button ul li").click(function(){
+				$(".on").removeClass('on');
+				var $this = $(this);
+				$this.addClass('on');
+				var position = 600*(parseInt($this.text())-1);
+				$(".pic").animate({right: position+'px'}, 500);
+		});
+		/* 左右切换 */
+		$(".right").click(function() {
+			if(!$(".pic").is(":animated"))
+				go("right");
+		});
+		$(".left").click(function() {
+			if(!$(".pic").is(":animated"))
+				go("left");
+		});		
+		/* 自动轮播 */
+		setInterval("go('right')",3000);
+
+		/* 移动函数 */
+		function go(to){
+			var now = parseInt($(".pic").css("right"));
+			var button = $(".on");
+			var next;
+			if(to=="right"){
+				if(now!=2400){
+					next = button.next();
+					now = now+600+'px';
+				}else{
+					next = $(".button ul li").first();
+					now = '0px';
+				}
+			}else{
+				if(now!=0){
+					next = button.prev();
+					now = now-600+'px';
+				}else{
+					next = $(".button ul li").last();
+					now = '2400px';
+				}				
+			}	
+			button.removeClass('on');
+			next.addClass('on');
+			$(".pic").animate({right: now}, 500);
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+.main{
+	width: 600px;
+	height: 400px;
+	overflow: hidden;
+}
+.pic{
+	position: relative;
+	width: 3000px;
+	right: 0px;		
+	overflow: auto;
+}
+img{
+	float: left;
+	width: 600px;
+	height: 400px;
+}
+.button{
+	position: absolute;
+	top: 360px;
+	left: 170px;
+}
+.button ul li{
+	display: inline-block;
+	background: white;
+	width: 20px;
+	height: 20px;
+	text-align: center;
+	line-height: 20px;
+	border-radius: 50%;
+}
+.button ul li:hover{
+	background: blue;
+	cursor: pointer;
+}
+.button ul li.on{
+	background: red;
+}
+.go{
+	background: rgba(0,0,0,0.5);
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+	font-size: 35px; 
+	text-align: center;
+	line-height: 40px;    
+	color: white;
+}
+.left{
+	position: absolute;
+	top: 180px;
+}
+.right{
+	position: absolute;
+	top: 180px;
+	left: 568px;
+}
