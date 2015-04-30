@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0062)http://www.cainiao8.com/web/js_examples/tuozhuai_ex2_fail.html -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>JavaScript拖拽示例网页</title>
+	<style type="text/css">
+		.drag{border: 1px solid; width: 400px; position: relative; top: 0px; left: 0px; background: rgb(204, 204, 204);}
+	</style>
+	<script type="text/javascript">
+		var dragging = false;
+		var mouseY;
+		var mouseX;
+		var offsetY;
+		var offsetX;
+		var max = 1;
+		function dragInit(node){
+			if(node.className == "drag"){ 
+				node.onmousedown = down;
+				node.onmousemove = move;
+				node.onmouseover = over;
+				node.onmouseup = up;
+				node.style.position = "relative";
+				node.style.top = "0px";
+				node.style.left = "0px";
+				node.dragging = false;
+			}
+			var children = node.childNodes;
+			for(var i = 0;i < children.length; i++){
+				dragInit(children[i]);
+			}
+		}
+		window.onload = function(){
+			dragInit(document);
+			document.onmouseup = docUp;
+		}
+		function down(event)
+		{	
+			event = event || window.event; 
+			dragging = true; 
+			this.dragging = true; 
+			mouseX = parseInt(event.clientX);
+			mouseY = parseInt(event.clientY);
+			objY = parseInt(this.style.top);
+			objX = parseInt(this.style.left);
+			offsetY = parseInt(this.offsetTop);
+			offsetX = parseInt(this.offsetLeft);
+			this.style.zIndex = max++;
+			this.style.opacity = 0;
+					var new_node = this.cloneNode(true);
+					new_node.style.position = "absolute";
+					new_node.style.background = "#666";
+					new_node.style.opacity = 1;
+					new_node.style.zIndex = -1;
+		            new_node.style.top = offsetY + "px";
+		            new_node.style.left = offsetX + "px";
+		            this.parentNode.appendChild(new_node);
+		}
+		function move(event){
+			event = event || window.event; 
+			if(this.dragging == true && dragging == true){
+				var x,y;
+				y = event.clientY - mouseY;
+				x = event.clientX - mouseX;
+				this.style.top = y + objY + "px";
+				this.style.left = x + objX + "px";
+				
+				var tmp_node = this.parentNode.lastChild;
+				tmp_node.style.top = y + offsetY + "px";
+				tmp_node.style.left = x + offsetX + "px";
+			}
+		}
+		function up(){
+			this.dragging = false;
+			this.style.opacity = 1;
+
+		}
+		function docUp(){
+			dragging = false;
+		}
+		function over(){
+			this.style.cursor = "move";
+		}
+	</script>
+	</head>
+
+	<body>
+	<div class="drag">
+	  <p>我是拖拽示例DIV1。</p>
+	  <p>可以试验一下效果。</p>
+	</div>
+	<div class="drag">
+	  <p>我是拖拽示例DIV2。</p>
+	</div>
+
+
+	</body>
+</html>
