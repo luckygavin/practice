@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>JavaScript拖拽示例网页</title>
+	<title>JavaScript模拟拖拽</title>
 	<style type="text/css">
 		.drag{border: 1px solid; width: 400px; position: relative; top: 0px; left: 0px; background: rgb(204, 204, 204);}
 	</style>
@@ -51,7 +51,7 @@
 					new_node.style.position = "absolute";
 					new_node.style.background = "#666";
 					new_node.style.opacity = 1;
-					new_node.style.zIndex = -1;
+					new_node.style.zIndex = max-2;
 		            new_node.style.top = offsetY + "px";
 		            new_node.style.left = offsetX + "px";
 		            this.parentNode.appendChild(new_node);
@@ -64,8 +64,10 @@
 				x = event.clientX - mouseX;
 				this.style.top = y + objY + "px";
 				this.style.left = x + objX + "px";
-				
+			
+			console.log(event.pageX+ " " + event.pageY);
 				var tmp_node = this.parentNode.lastChild;
+			console.log(tmp_node.offsetTop);
 				tmp_node.style.top = y + offsetY + "px";
 				tmp_node.style.left = x + offsetX + "px";
 			}

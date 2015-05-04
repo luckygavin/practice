@@ -8,7 +8,7 @@
 .mod-buy .inBox{width:600px; height:160px; line-height:1.5;border:1px solid #dfdfdf;margin-bottom:10px}
 .mod-buy .outBox{width:500px; height:150px; padding-left:20px;border:1px solid #dfdfdf;}
 .mod-buy .list{ width:80px;float:left;height:30px;line-height:30px; margin:5px; border:2px dashed #444;
- background-color:#ddd; cursor:move;}
+ background-color:#ddd; cursor:move;-webkit-user-drag: element;-webkit-user-select:none;}
 .mod-buy .list:hover{border-color:#666; background-color:#888;}
 
 </style>
@@ -33,6 +33,7 @@
     <div class="list" title="物品10" draggable="true">物品10</div>
     <div class="list" title="物品11" draggable="true">物品11</div>
 </div>
+<div id="draging">拖拽到指定位置</div>
 </div>
 <script>
 
@@ -71,33 +72,20 @@
         dragsEle[i].onselectstart = function() {
             return false;
         };
-        dragsEle[i].onmousemove = move;
         //该元素开始拖动的时候
         dragsEle[i].ondragstart = function(ev) {
             ev.dataTransfer.setData("text", ev.target.innerHTML);
-            ev.dataTransfer.setDragImage(ev.target, 10, 10);
-            ev.dataTransfer.effectAllowed = "copy";
+            var _drag = document.getElementById("draging");
+            _drag.style.opacity="10";
+            ev.dataTransfer.setDragImage(_drag, 10, 10);
+            ev.dataTransfer.effectAllowed = "move";
             eleDrag = ev.target;
-            
-            mouseX = parseInt(ev.clientX);
-            mouseY = parseInt(ev.clientY);
-            objY = parseInt(eleDrag.style.top);
-            objX = parseInt(eleDrag.style.left); 
-            offsetY = parseInt(eleDrag.offsetTop);
-            offsetX = parseInt(eleDrag.offsetLeft);
-
-            var new_node = eleDrag.cloneNode(true);
-            new_node.style.position = "absolute";
-            new_node.style.zIndex = -1;
-            new_node.style.top = offsetY + "px";
-            new_node.style.left = offsetX + "px";
-            eleDrag.parentNode.appendChild(new_node);
             
             return true;
         };
         //该对象结束拖动的时候
         dragsEle[i].ondragend = function(ev) {
-            ev.dataTransfer.dropEffect="copy";
+            ev.dataTransfer.dropEffect="move";
             ev.dataTransfer.clearData("text");
             eleDrag = null;
             return false
@@ -105,22 +93,9 @@
     }
 
 
-    function move(event){
-        event = event || window.event; 
-        var x,y;
-        y = event.clientY - mouseY;
-        x = event.clientX - mouseX;
-
-        var tmp_node = this.parentNode.lastChild;
-        console.log(tmp_node);
-        tmp_node.style.top = y + offsetY + "px";
-        tmp_node.style.left = x + offsetX + "px";
-    }
-
-
     //拖动该对象到目标对象上移动的时候
     inBox.ondragover = function(ev) {
-        ev.dataTransfer.dropEffect="copy";
+        ev.dataTransfer.dropEffect="move";
         ev.preventDefault();
         return true;
     };
@@ -138,7 +113,7 @@
         return false;
     };
     outBox.ondragover = function(ev) {
-        ev.dataTransfer.dropEffect="copy";
+        ev.dataTransfer.dropEffect="move";
         ev.preventDefault();
         return true;
     };
