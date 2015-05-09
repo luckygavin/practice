@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>圈子登陆</title>
+	<link rel="stylesheet" href="./css/圈子登陆界面.css">
+	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="js/圈子登陆界面(版本2).js"></script>
+</head>
+<body>
+	<div class="index">
+		<div id="slide"></div>
+		<img src="./images/logo.png">
+		<div class="buttonBox">
+			<div id="loginButton">登录</div>
+			<div id="signInButton">注册</div>
+		</div>
+	</div>
+	<div id="login">
+		<form class="form" action="#">
+			<div class="welcome">欢迎登陆圈子</div>
+			<input type="text" name="username" placeholder="请输入您的注册邮箱或学号" />	
+			<input type="password" name="password" placeholder="输入您的密码" />	
+			<input class="validate" type="text" name="validate" placeholder="请输入验证码" />	
+			<img src="./images/logo.png" alt="点击刷新" />
+			<input type="submit" class="submit" value="登录" />
+		</form>
+	</div>
+	<div id="signIn">
+		<form class="form" action="#">
+			<div class="welcome">使用邮箱注册</div>
+			<input type="text" name="username" placeholder="请输入注册邮箱" />	
+			<input type="password" name="password" placeholder="输入您的注册密码" />	
+			<input class="validate" type="text" name="validate" placeholder="请输入验证码" />	
+			<img src="./images/logo.png" alt="点击刷新" />
+			<input type="submit" class="submit" value="注册" />
+		</form>
+	</div>	
+</body>
+</html>

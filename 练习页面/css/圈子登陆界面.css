@@ -1,0 +1,87 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td {
+    margin: 0;
+    padding: 0;
+	font-family: "Microsoft Yahei",Arial,Tahoma;	
+}
+
+body{
+	background-color: #2d6391;
+}
+#slide{
+	height: 240px;
+}
+.index{
+	width: 665px;
+	margin: 0 auto;
+	margin-top: 100px;
+}
+.buttonBox{
+	margin: 36px 100px;
+}
+.buttonBox div{
+	display: inline-block;
+	line-height: 64px;
+	text-align: center;
+	font-size: 30px;
+	letter-spacing: 1em;
+	padding: 0 10px 0 40px;
+	border-radius: 5px;
+	cursor: pointer;
+}
+#loginButton{
+	background-color: #000;
+	color: #fff;
+	margin-right: 60px;
+	box-shadow: 3px 0px 4px #17334a;
+}
+#signInButton{
+	background-color: #fff;
+	color: #929191;
+}
+
+#login{
+	background-color: #fff;
+	margin-top: -15px;
+	display: none;
+}
+#signIn{
+	background-color: #fff;
+	margin-top: -15px;
+	display: none;
+}
+.form{
+	margin: 0 auto;
+	width: 350px;
+}
+.form input{
+	width: 315px;
+	height: 42px;
+	margin: 6px 0;
+	border: 1px solid #d7d7d7;
+	padding: 0 15px;
+	font-size: 16px;
+}
+input.validate{
+	width: 234px;
+}
+.form img{
+	margin-left: -6px;
+	height: 44px;
+  	width: 85px;
+  	position: relative;
+  	top: 16px;
+}
+input.submit{
+	cursor: pointer;
+	width: 366px;
+	background-color: #83ad00;
+	border-radius: 5px;
+	color: #fff;
+	vertical-align: middle;
+	letter-spacing: 20px;
+	padding-left: 25px;
+}
+.welcome{
+	padding: 15px 0; 
+}
+
