@@ -6,6 +6,8 @@
 	<title>JavaScript模拟拖拽</title>
 	<style type="text/css">
 		.drag{border: 1px solid; width: 400px; position: relative; top: 0px; left: 0px; background: rgb(204, 204, 204);}
+		body{padding:100px}
+		.aa{position: relative;top: 300px;}
 	</style>
 	<script type="text/javascript">
 		var dragging = false;
@@ -45,6 +47,7 @@
 			objX = parseInt(this.style.left);
 			offsetY = parseInt(this.offsetTop);
 			offsetX = parseInt(this.offsetLeft);
+console.log(offsetY);
 			this.style.zIndex = max++;
 			this.style.opacity = 0;
 					var new_node = this.cloneNode(true);
@@ -65,9 +68,7 @@
 				this.style.top = y + objY + "px";
 				this.style.left = x + objX + "px";
 			
-			console.log(event.pageX+ " " + event.pageY);
 				var tmp_node = this.parentNode.lastChild;
-			console.log(tmp_node.offsetTop);
 				tmp_node.style.top = y + offsetY + "px";
 				tmp_node.style.left = x + offsetX + "px";
 			}
@@ -91,10 +92,11 @@
 	  <p>我是拖拽示例DIV1。</p>
 	  <p>可以试验一下效果。</p>
 	</div>
-	<div class="drag">
-	  <p>我是拖拽示例DIV2。</p>
+	<div class="aa">
+		<div class="drag">
+		  <p>我是拖拽示例DIV2。</p>
+		</div>
 	</div>
-
 
 	</body>
 </html>
