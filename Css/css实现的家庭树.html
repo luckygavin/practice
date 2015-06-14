@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>家庭树</title>
+	<style type="text/css">
+		ul,li{
+			padding: 0;
+			margin: 0;
+		}
+		span{
+			position: relative;
+			cursor: pointer;
+			padding: 5px 8px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			font-size: 13px;
+			top: 20px;
+			color: #666;
+			z-index: 2;
+		}
+		ul{
+			list-style: none;
+			position: relative;
+		}
+		.tree ul ul:before{
+			content: '';
+			width: 0;
+			height: 0;
+			border-left: 1px solid #ccc;
+			position: relative;
+			left: -50%;
+			top: 23px;
+		}
+		.tree li{
+			float: left;
+			text-align: center;
+			padding: 0 5px;
+		}
+		.tree li li{
+			position: relative;
+			top: 40px;
+			display: inline-block;
+			border-top: 1px solid #ccc;
+		}
+		.tree li li:before{
+			content: '';
+			width: 0;
+			height: 0;
+			position: absolute;
+			border-left: 1px solid #ccc;
+			height: 20px;
+			top: -1px;
+			left: 50%;
+		}
+		.tree li li:first-child:after{  /* 用来覆盖第一个孩子前面的线 */
+			content: '';
+			display: block;
+			position: absolute;
+			width: 50%;
+			border-top:1px solid #fff;
+			top: -1px;
+			left: 0;
+		}
+		.tree li li:last-child:after{	/* 用来覆盖最后一个孩子后面的线	*/
+			content: '';
+			display: block;
+			position: absolute;
+			width: 50%;
+			border-top:1px solid #fff;
+			top: -1px;
+			right: -1px;
+		}
+		.tree li li:only-of-type{	/* 处理只有一个孩子的特殊情况	*/
+			position: relative;
+			top: 40px;
+			display: inline-block;
+			border-top: 0;
+		}
+		.tree span:hover,.tree span:hover+ul li span{
+			background: #c8e4f8;
+		}
+		.tree span:hover+ul li,.tree span:hover+ul li:before{
+			border-color: #94a0b4;
+		}
+	</style>
+</head>
+<body>
+	<div class="tree">
+		<ul>
+			<li>
+				<span>父亲</span>
+				<ul>
+					<li>
+						<span>孩子1</span>
+						<ul>
+							<li>
+								<span>孙子1</span>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<span>孩子2</span>
+					</li>	
+					<li>
+						<span>孩子3</span>
+						<ul>
+							<li>
+								<span>孙子2</span>
+							</li>	
+							<li>
+								<span>孙子3</span>
+								<ul>
+									<li>
+										<span>曾孙1</span>
+									</li>	
+									<li>
+										<span>曾孙2</span>
+									</li>
+									<li>
+										<span>曾孙3</span>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</body>
+</html>

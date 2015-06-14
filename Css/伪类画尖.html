@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Before after</title>
+	<style type="text/css">
+		body{
+			padding: 50px;
+		}
+		div{
+			margin: 20px;
+		}
+		.tip{
+			position: relative;
+			width: 58px;
+			color: #fff;
+			background-color: #414141;
+			border-radius: 4px;
+			padding: 5px;
+			margin-top: 20px;
+			font-size: 12px;
+			text-align: center;
+		}
+		.tip:before{
+			content: '';
+			position: absolute;
+			width: 0;
+			height: 0;
+			top: -10px;
+			left: 28px;
+			border-bottom: 10px solid #414141;
+			border-right: 6px solid transparent;
+			border-left: 6px solid transparent;
+		}
+		.tip2{
+			width: 120px;
+			height: 80px;
+			position: relative;
+			border-radius: 10px;
+			background-color: red;
+		}
+		.tip2:before{
+			content: '';
+			position: absolute;
+			right: 100%;
+			top: 26px;
+			width: 0;
+			height: 0;
+			border-top: 13px solid transparent;
+			border-right: 26px solid red;
+			border-bottom: 13px solid transparent;
+		}
+		.trangle{
+			width: 0;
+			height: 0;
+			display: inline-block;
+		}.t1{
+			border-bottom: 16px solid red;
+			border-left: 8px solid transparent;
+			border-right: 8px solid transparent;
+		}.t2{
+			border-left: 16px solid red;
+			border-top: 8px solid transparent;
+			border-bottom: 8px solid transparent;
+		}.t3{
+			border-top: 16px solid red;
+			border-left: 8px solid transparent;
+			border-right: 8px solid transparent;
+		}.t4{
+			border-right: 16px solid red;
+			border-top: 8px solid transparent;
+			border-bottom: 8px solid transparent;
+		}.t5{
+			border-right: 16px solid red;
+			border-bottom: 16px solid transparent;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="tip">不感兴趣</div>
+	<div class="tip2"></div>
+	<div class="trangle t1"></div>
+	<div class="trangle t2"></div>
+	<div class="trangle t3"></div>
+	<div class="trangle t4"></div>
+	<div class="trangle t5"></div>
+	<div class="para"></div>
+</body>
+</html>

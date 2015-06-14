@@ -48,10 +48,11 @@
 				go("left");
 		});		
 		/* 自动轮播 */
-		setInterval("go('right')",3000);
+		var autoGo = setTimeout("go('right')",3000);
 
 		/* 移动函数 */
 		function go(to){
+			clearTimeout(autoGo); 	//清除掉自动轮播
 			var now = parseInt($(".pic").css("right"));
 			var button = $(".on");
 			var next;
@@ -75,6 +76,7 @@
 			button.removeClass('on');
 			next.addClass('on');
 			$(".pic").animate({right: now}, 500);
+			autoGo = setTimeout("go('right')",3000);	//重新设置自动轮播
 		}
 	</script>
 </body>

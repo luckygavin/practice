@@ -1,0 +1,138 @@
+<!DOCTYPE html >
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>购物车DEMO</title>
+<style>
+.mod-buy{width:800px;margin:0 auto;}
+.mod-buy .inBox{width:600px; height:160px; line-height:1.5;border:1px solid #dfdfdf;margin-bottom:10px}
+.mod-buy .outBox{width:500px; height:150px; padding-left:20px;border:1px solid #dfdfdf;}
+.mod-buy .list{ width:80px;float:left;height:30px;line-height:30px; margin:5px; border:2px dashed #444;
+ background-color:#ddd; cursor:move;-webkit-user-drag: element;-webkit-user-select:none;}
+.mod-buy .list:hover{border-color:#666; background-color:#888;}
+
+</style>
+</head>
+
+<body>
+<div class="mod-buy">
+<h3>购物车</h3>
+<div class="inBox"> </div>
+<h3>商品信息</h3>
+<div class="outBox">
+
+    <div class="list" title="物品1" draggable="true">物品1</div>
+    <div class="list" title="物品2" draggable="true">物品2</div>
+    <div class="list" title="物品3" draggable="true">物品3</div>
+    <div class="list" title="物品4" draggable="true">物品4</div>
+    <div class="list" title="物品5" draggable="true">物品5</div>
+    <div class="list" title="物品6" draggable="true">物品6</div>
+    <div class="list" title="物品7" draggable="true">物品7</div>
+    <div class="list" title="物品8" draggable="true">物品8</div>
+    <div class="list" title="物品9" draggable="true">物品9</div>
+    <div class="list" title="物品10" draggable="true">物品10</div>
+    <div class="list" title="物品11" draggable="true">物品11</div>
+</div>
+<div id="draging">拖拽到指定位置</div>
+</div>
+<script>
+
+(function(){
+        var __ = function(selector,tag) {
+        if (!selector) { return []; }
+        var arrElement = [];
+        if (document.querySelectorAll) {
+            arrElement = document.querySelectorAll(selector);
+        } else {
+            var all = document.getElementsByTagName(tag);
+            for (var i = 0,len = all.length; i<len; i++) {
+                if (/^\./.test(selector)) {
+                    if (all[i].className === selector.replace(".", "")) {
+                        arrElement.push(all[i]);
+                    }
+                } else if(/^/.test(selector)) {
+                    if (all[i].id === selector) {
+                        arrElement.push(all[i]);
+                    }
+                }
+            }
+        }
+        return arrElement;
+    };
+
+    var inBox = __(".inBox","div")[0],
+        outBox = __(".outBox","div")[0],
+        dragsEle = __("div",".list"), 
+        dragLen = dragsEle.length, 
+        eleDrag = null;    
+    var objY,objY,mouseX,mouseY,offsetY,offsetX;
+    //为拖拽的元素绑定事件
+    for (var i=0; i<dragLen; i+=1) {
+        //使拖拽的元素不能选定
+        dragsEle[i].onselectstart = function() {
+            return false;
+        };
+        //该元素开始拖动的时候
+        dragsEle[i].ondragstart = function(ev) {
+            ev.dataTransfer.setData("text", ev.target.innerHTML);
+            var _drag = document.getElementById("draging");
+            _drag.style.opacity="10";
+            ev.dataTransfer.setDragImage(_drag, 10, 10);
+            ev.dataTransfer.effectAllowed = "move";
+            eleDrag = ev.target;
+            
+            return true;
+        };
+        //该对象结束拖动的时候
+        dragsEle[i].ondragend = function(ev) {
+            ev.dataTransfer.dropEffect="move";
+            ev.dataTransfer.clearData("text");
+            eleDrag = null;
+            return false
+        };
+    }
+
+
+    //拖动该对象到目标对象上移动的时候
+    inBox.ondragover = function(ev) {
+        ev.dataTransfer.dropEffect="move";
+        ev.preventDefault();
+        return true;
+    };
+    //进入目标对象的时候
+    inBox.ondragenter = function(ev) {
+        return true;
+    };
+    //放开手的时候
+    inBox.ondrop = function(ev) {
+        if (eleDrag) {
+            var tmp = eleDrag;
+            // eleDrag.parentNode.removeChild(eleDrag);
+            this.appendChild(tmp);
+        }
+        return false;
+    };
+    outBox.ondragover = function(ev) {
+        ev.dataTransfer.dropEffect="move";
+        ev.preventDefault();
+        return true;
+    };
+
+    outBox.ondragenter = function(ev) {
+        
+        return true;
+    };
+    outBox.ondrop = function(ev) {
+        if (eleDrag) {
+            var tmp = eleDrag;
+            //eleDrag.parentNode.removeChild(eleDrag);
+            this.appendChild(tmp);
+        }
+        return false;
+    };
+})();
+
+
+</script>
+</body>
+</html>
