@@ -1,0 +1,27 @@
+.main{
+	border:1px dashed #000;
+	border-color:gray;
+
+	position:absolute;
+	top:10px;
+	left:10px;
+	width:400px;
+	height:400px;
+}
+.snake{
+	position: absolute;
+	/*left:0px;
+	top:0px;*/
+	border:2px dashed #000;
+	border-color:gray;
+	width:8px;
+	height: 8px;
+	background-color: black;
+}
+.side{
+	position:absolute;
+	left:420px;
+	top:10px;
+	width:100px;
+	height: auto;
+}
