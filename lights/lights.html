@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<title>Lights Off</title>
+	<script type="text/javascript" src="react/react.js"></script>
+	<script type="text/javascript" src="react/react-dom.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+<style type="text/css">
+#body .content{width:400px;margin:0 auto;}
+#body table{border-spacing:1px;}
+#body table td{background: #000;opacity:0.9;}
+#body table td.light{background: #0099ff;}
+#body table td span{display:inline-block;line-height:60px;width:60px;text-align: center;cursor:pointer;color:#fff;}
+#body .step p{word-break: break-all;}
+</style>
+</head>
+<body id="body">
+<div class="content">
+	<h1>Lights Off</h1>
+	<p>介绍：游戏呈现多个格子，每个格子代表一盏灯。一开始会有几盏灯打开。当你点击一盏灯时，它以及它的周围的灯的状态都会改变。目标是把所有的灯都关掉。希望喜欢！</p>
+	<div id="box"></div>
+</div>
+
+<script type="text/babel">
+	// 代表一个灯的td
+	var Light = React.createClass({
+		initializeTouchEvents: function () {
+            return (true);
+        },
+		getInitialState:function(){
+			return {lighton: Math.random()*25/13>1};
+		},
+		changeState: function(){
+			this.setState({lighton:!this.state.lighton},function(){
+				var code = this.props.code;
+				this.props.tableHandleChange(code);
+			});
+		},
+		render: function(){
+			var code = this.props.code;
+			var letter = String.fromCharCode(code);
+			var light = this.state.lighton ? 'light' : '';
+			return <td className={light} onClick={this.changeState}><span>{letter}</span></td>;
+		}
+	});
+	// Table
+	var Table = React.createClass({
+		getInitialState: function () {
+			var trs=[];
+			var lightCode=65;
+			for(var i=0;i<5;i++){
+				var tds = [];
+				for(var j=0;j<5;j++){
+					tds.push(<Light ref={lightCode} key={lightCode} code={lightCode} tableHandleChange={this.handleChange}/>);
+					lightCode++;
+				}
+				trs.push(tds);
+			}
+			// 所有light放在一个二维数组里
+			return {
+				lights: trs
+			};
+		},
+		getModifyLights: function(code){
+			var result = [];
+			if(code>69){
+				result.push(code-5);
+			}
+			if(code<=84){
+				result.push(code+5);
+			}
+			if((code-65)%5!=0){
+				result.push(code-1);
+			}
+			if((code-65)%5!=4){
+				result.push(code+1)
+			}
+			return result;
+		},
+		handleChange: function(code){
+			console.log(code);
+			this.props.boxHandleChange(code);
+			//console.log(this.refs[code])
+			// 改变所有受影响的灯的状态
+			var modLights = this.getModifyLights(code);
+			var that = this;
+			modLights.map(function(item){
+				var light = that.refs[item];
+				light.setState({lighton: !light.state.lighton});
+			});
+		},
+		render: function(){
+			var lights = this.state.lights;
+			return (
+				<table>
+					<tbody>
+						{lights.map(function(item, i) {
+				          	return (
+								<tr key={i}>
+									{item}
+								</tr>
+				          	);
+				        }, this)}
+					</tbody>
+				</table>
+			);
+		}
+	});
+	// Box
+	var GameBox = React.createClass({
+		getInitialState: function() {
+			return {step: 0,text: ''};
+		},
+		handleChange: function(code){
+			var letter = String.fromCharCode(code);
+			var text = this.state.text;
+			text = text+(text.length ?',':'')+letter;
+			this.setState({step: this.state.step+1, text: text});
+		},
+		render: function(){
+			var step = this.state.step;
+			var text = this.state.text;
+			return (
+				<div>
+					<Table boxHandleChange={this.handleChange}/>
+					<Step step={step} text={text}/>
+				</div>
+			);
+		}
+	});
+	// Step
+	var Step = React.createClass({
+		render: function(){
+			var step = this.props.step;
+			var text = this.props.text;
+			return (
+				<div className="step">
+					<p>总步数：<span>{step}</span></p>
+					<p>{text}</p>
+				</div>
+			);
+		}
+	});
+
+	ReactDOM.render(
+		<GameBox />,
+		document.getElementById('box')
+	);
+</script>
+</body>
+</html>
