@@ -1,0 +1,10 @@
+body{height:100%;}
+#chess{width:960px;margin:0 auto;}
+#chess .info{float:left;height:535px;width:200px;background:#fff`;}
+#chess .talk{float:left;height:535px;width:200px;background:#fff`;}
+#chess .main{float:left;height:535px;width:535px;background: url("../images/bg.jpg") no-repeat;}
+#chess .main table{margin:7px 0 0 6px;}
+#chess .main table td{display:inline-block;content:"";height:33px;width:33px;text-align:center;margin-right:2px;}
+#chess .main table td:last-child{margin:0;}
+#chess .main table td.white{background: url("../images/w.png") no-repeat;}
+#chess .main table td.black{background: url("../images/b.png") no-repeat;}
