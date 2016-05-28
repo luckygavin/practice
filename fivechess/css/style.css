@@ -1,10 +1,20 @@
 body{height:100%;}
+body h1{text-align:center;line-height:120px;}
 #chess{width:960px;margin:0 auto;}
-#chess .info{float:left;height:535px;width:200px;background:#fff`;}
-#chess .talk{float:left;height:535px;width:200px;background:#fff`;}
 #chess .desk{float:left;height:535px;width:535px;background: url("../images/bg.jpg") no-repeat;}
 #chess .desk table{margin:7px 0 0 6px;}
 #chess .desk table td{display:inline-block;content:"";height:33px;width:33px;text-align:center;margin-right:2px;}
 #chess .desk table td:last-child{margin:0;}
 #chess .desk table td.white{background: url("../images/w.png") no-repeat;}
 #chess .desk table td.black{background: url("../images/b.png") no-repeat;}
+
+#chess .info{float:left;height:535px;width:200px;background:#fff;}
+#chess .chat{float:left;height:535px;width:200px;background:#fff;}
+
+.controller{width:100px;margin:20px auto;}
+.controller .start{cursor:pointer;background-color:#FF4F4F;color: #fff;text-align:center;padding:10px;border-radius:16px;}
+.controller .start:hover{opacity:0.6;}
+.controller .disabled{cursor:default;background-color:#ccc;}
+.controller .disabled:hover{opacity:1;}
+
+
