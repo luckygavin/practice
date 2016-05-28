@@ -174,7 +174,8 @@ var ChessDesk = React.createClass({displayName: "ChessDesk",
 			opposite[value]=6; 		
 			if(current[value]==5){
 				playing = false;
-				that.props.theEnd(player[step]+" win! Game over.");
+				that.props.theEnd();
+				alert(player[step]+" win! Game over.");
 				return;
 			}
 		})
@@ -357,22 +358,11 @@ var Controller = React.createClass({displayName: "Controller",
  */
 var Mask = React.createClass({displayName: "Mask",
 	getInitialState() {
-	    return {show:false,message:''};
-	},
-	notify: function(message){
-		this.setState({show: true,message:message});
-	},
-	click: function(){
-		this.setState({show: false});
+	    return {show:false};
 	},
 	render: function(){
 		return (
-			React.createElement("div", {className: "mask "+(this.state.show ? '' : 'hide')}, 
-				React.createElement("div", {className: "notify"}, 
-					React.createElement("div", {className: "message"}, this.state.message), 
-					React.createElement("div", {className: "button", onClick: this.click}, React.createElement("span", null, "ok"))
-				)
-			)
+			React.createElement("div", {class: "mask"})
 		);
 	}
 });
@@ -387,8 +377,7 @@ var Room = React.createClass({displayName: "Room",
 	computerFirst: function(){
 		this.refs.desk.AIStep();
 	},
-	theEnd: function(message){
-		this.refs.mask.notify(message);
+	theEnd: function(){
 		this.refs.controller.theEnd();
 	},
 	start: function(){
@@ -406,7 +395,7 @@ var Room = React.createClass({displayName: "Room",
 				React.createElement(Chat, {ref: "chat"}), 
 				React.createElement("div", {className: "clearfix"}), 
 				React.createElement(Controller, {ref: "controller", start: this.start}), 
-				React.createElement(Mask, {ref: "mask"})
+				React.createElement(Mask, null)
 			)
 		);
 	}

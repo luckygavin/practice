@@ -7,14 +7,19 @@ body h1{text-align:center;line-height:120px;}
 #chess .desk table td:last-child{margin:0;}
 #chess .desk table td.white{background: url("../images/w.png") no-repeat;}
 #chess .desk table td.black{background: url("../images/b.png") no-repeat;}
-
+#chess .desk table td.white.now{background: url("../images/w_n.png") no-repeat;}
+#chess .desk table td.black.now{background: url("../images/b_n.png") no-repeat;}
 #chess .info{float:left;height:535px;width:200px;background:#fff;}
 #chess .chat{float:left;height:535px;width:200px;background:#fff;}
+#chess .controller{width:100px;margin:20px auto;}
+#chess .controller .start{cursor:pointer;background-color:#FF4F4F;color: #fff;text-align:center;padding:10px;border-radius:16px;}
+#chess .controller .start:hover{opacity:0.6;}
+#chess .controller .playing{cursor:default;background-color:#ccc;}
+#chess .controller .playing:hover{opacity:1;}
 
-.controller{width:100px;margin:20px auto;}
-.controller .start{cursor:pointer;background-color:#FF4F4F;color: #fff;text-align:center;padding:10px;border-radius:16px;}
-.controller .start:hover{opacity:0.6;}
-.controller .playing{cursor:default;background-color:#ccc;}
-.controller .playing:hover{opacity:1;}
-
-
+#chess .mask{position:fixed;top:0;bottom:0;left:0;right:0;background:rgba(0,0,0,0.4)}
+#chess .mask.hide{display:none;}
+#chess .mask .notify{position:absolute;border-radius:16px;padding:0 20px;width:200px;height:100px;top:50%;left:50%;margin:-50px 0 0 -120px;text-align:center;background:#fff;}
+#chess .mask .notify .message{line-height:60px;}
+#chess .mask .notify .button{position:relative;bottom:0;width:50px; margin:0 auto;padding:6px; border-radius:15px;background:#00ff88;cursor:pointer;}
+#chess .mask .notify .button:hover{background:#4dffa5;}

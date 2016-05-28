@@ -360,17 +360,14 @@ var Mask = React.createClass({displayName: "Mask",
 	    return {show:false,message:''};
 	},
 	notify: function(message){
-		this.setState({show: true,message:message});
-	},
-	click: function(){
-		this.setState({show: false});
+		this.setState({show: true});
 	},
 	render: function(){
 		return (
 			React.createElement("div", {className: "mask "+(this.state.show ? '' : 'hide')}, 
 				React.createElement("div", {className: "notify"}, 
-					React.createElement("div", {className: "message"}, this.state.message), 
-					React.createElement("div", {className: "button", onClick: this.click}, React.createElement("span", null, "ok"))
+					React.createElement("div", {className: "message"}, message), 
+					React.createElement("div", {className: "button"}, React.createElement("span", null, "ok"))
 				)
 			)
 		);

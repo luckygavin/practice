@@ -357,20 +357,13 @@ var Controller = React.createClass({displayName: "Controller",
  */
 var Mask = React.createClass({displayName: "Mask",
 	getInitialState() {
-	    return {show:false,message:''};
-	},
-	notify: function(message){
-		this.setState({show: true,message:message});
-	},
-	click: function(){
-		this.setState({show: false});
+	    return {show:false};
 	},
 	render: function(){
 		return (
 			React.createElement("div", {className: "mask "+(this.state.show ? '' : 'hide')}, 
-				React.createElement("div", {className: "notify"}, 
-					React.createElement("div", {className: "message"}, this.state.message), 
-					React.createElement("div", {className: "button", onClick: this.click}, React.createElement("span", null, "ok"))
+				React.createElement("div", {className: ""}
+					
 				)
 			)
 		);
@@ -387,8 +380,7 @@ var Room = React.createClass({displayName: "Room",
 	computerFirst: function(){
 		this.refs.desk.AIStep();
 	},
-	theEnd: function(message){
-		this.refs.mask.notify(message);
+	theEnd: function(){
 		this.refs.controller.theEnd();
 	},
 	start: function(){

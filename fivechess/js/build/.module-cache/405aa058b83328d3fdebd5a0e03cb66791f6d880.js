@@ -362,15 +362,12 @@ var Mask = React.createClass({displayName: "Mask",
 	notify: function(message){
 		this.setState({show: true,message:message});
 	},
-	click: function(){
-		this.setState({show: false});
-	},
 	render: function(){
 		return (
 			React.createElement("div", {className: "mask "+(this.state.show ? '' : 'hide')}, 
 				React.createElement("div", {className: "notify"}, 
 					React.createElement("div", {className: "message"}, this.state.message), 
-					React.createElement("div", {className: "button", onClick: this.click}, React.createElement("span", null, "ok"))
+					React.createElement("div", {className: "button"}, React.createElement("span", null, "ok"))
 				)
 			)
 		);

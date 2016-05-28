@@ -358,12 +358,10 @@ var Controller = React.createClass({displayName: "Controller",
 var Mask = React.createClass({displayName: "Mask",
 	getInitialState() {
 	    return {show:false,message:''};
+	    // return {show:true,message:'dafda'};
 	},
 	notify: function(message){
 		this.setState({show: true,message:message});
-	},
-	click: function(){
-		this.setState({show: false});
 	},
 	render: function(){
 		return (

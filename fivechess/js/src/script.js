@@ -95,7 +95,7 @@ var resetScore = function(){
  */
 var Piece = React.createClass({
   	getInitialState:function(){
-			return {piece:0}; //piece:0-没有棋子,1-黑子,2-白子
+			return {piece:0,now:false}; //piece:0-没有棋子,1-黑子,2-白子
 	},
 	putPiece: function(){
 		if(!playing) return;
@@ -116,6 +116,9 @@ var Piece = React.createClass({
   			style = "black";
   		}else if(this.state.piece == 2){
   			style = "white";
+  		}
+  		if(this.state.now){
+  			style += " now";
   		}
 	    return (
 	      	<td className={style} onClick={this.putPiece}></td>
@@ -148,6 +151,13 @@ var ChessDesk = React.createClass({
 	},
 	/* 计算输赢 */
 	calcWinner: function(x, y){ 
+		// 给当前落子加个标记
+		var now = x*15+y;
+		if(this.state.prev){
+			this.refs[this.state.prev].setState({now:false});
+		}
+		this.setState({prev:now});
+		this.refs[now].setState({now:true});
 		// 根据落子坐标取出所有有关赢法
 		var relateWin = wins[x][y];
 		if(step==1){
@@ -164,8 +174,7 @@ var ChessDesk = React.createClass({
 			opposite[value]=6; 		
 			if(current[value]==5){
 				playing = false;
-				that.props.theEnd();
-				alert(player[step]+" win! Game over.");
+				that.props.theEnd(player[step]+" win! Game over.");
 				return;
 			}
 		})
@@ -343,6 +352,30 @@ var Controller = React.createClass({
 		);
 	}
 });
+/**
+ * 弹出层
+ */
+var Mask = React.createClass({
+	getInitialState() {
+	    return {show:false,message:''};
+	},
+	notify: function(message){
+		this.setState({show: true,message:message});
+	},
+	click: function(){
+		this.setState({show: false});
+	},
+	render: function(){
+		return (
+			<div className={"mask "+(this.state.show ? '' : 'hide')}>
+				<div className="notify">
+					<div className="message">{this.state.message}</div>
+					<div className="button" onClick={this.click}><span>ok</span></div>
+				</div>
+			</div>
+		);
+	}
+});
 
 /**
  * 整个房间
@@ -354,7 +387,8 @@ var Room = React.createClass({
 	computerFirst: function(){
 		this.refs.desk.AIStep();
 	},
-	theEnd: function(){
+	theEnd: function(message){
+		this.refs.mask.notify(message);
 		this.refs.controller.theEnd();
 	},
 	start: function(){
@@ -372,6 +406,7 @@ var Room = React.createClass({
 				<Chat ref="chat" />
 				<div className="clearfix"></div>
 				<Controller ref="controller" start={this.start}/>
+				<Mask ref="mask" />
 			</div>
 		);
 	}
