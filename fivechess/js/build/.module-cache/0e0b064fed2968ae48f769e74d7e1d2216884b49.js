@@ -2,12 +2,10 @@ var playing = false;
 var step = 1; //记录接下来落下的是黑子还是白子,1-黑子,2-白子
 var player = []; //用于存储两玩家分别用什么棋子
 var desk = []; //用于保存棋盘上的所有棋子点状态,0-无棋子,1-黑子,2-白子
-var resetDesk = function(){
-	for(var i=0;i<15;i++){
-		desk[i] = [];
-		for(var j=0;j<15;j++){
-			desk[i][j] = 0;
-		}
+for(var i=0;i<15;i++){
+	desk[i] = [];
+	for(var j=0;j<15;j++){
+		desk[i][j] = 0;
 	}
 }
 var setDesk = function(x, y){
@@ -66,11 +64,9 @@ for(var i=14;i>=4;i--){
  */
 var blackWins = [];
 var whiteWins = [];
-var resetWinsState = function(){
-	for(var i=0;i<=count;i++){
-		blackWins[i] = 0;
-		whiteWins[i] = 0;
-	}
+for(var i=0;i<=count;i++){
+	blackWins[i] = 0;
+	whiteWins[i] = 0;
 }
 /**
  * 数据结构3：
@@ -91,9 +87,61 @@ var resetScore = function(){
 }
 
 /**
- * 棋子
+ * 计算最佳落子位置
  */
-var Piece = React.createClass({
+var calcPoint = function(){
+	resetScore();
+	if(step==1){
+		var current = blackWins;
+		var opposite = whiteWins;
+	}else{
+		var current = whiteWins;
+		var opposite = blackWins;
+	}
+	var max = 0;
+	var x=y=7;
+	for(var i=0;i<15;i++){
+		for(var j=0;j<15;j++){
+			if(desk[i][j]==0){
+				var currentScore = 0;
+				var oppositeScore = 0;
+				wins[i][j].map(function(value,index){
+					switch(current[value]){
+						case 1: currentScore += 1; break;
+						case 2: currentScore += 10; break;
+						case 3: currentScore += 200; break;
+						case 4: currentScore += 2000; break;
+						default: break;
+					}
+					switch(opposite[value]){
+						case 1: oppositeScore += 1; break;
+						case 2: oppositeScore += 10; break;
+						case 3: oppositeScore += 100; break;
+						case 4: oppositeScore += 1000; break;
+						default: break;
+					}
+				});
+				console.log(currentScore+'  '+oppositeScore);
+				if(currentScore>max){
+					max = currentScore;
+					x = i;
+					y = j;
+				}
+				if(oppositeScore>max){
+					max = oppositeScore;
+					x = i;
+					y = j;
+				}
+			}
+		}
+	}
+
+	return {x:x, y:y};
+}
+/**
+ * 以下为视图组件
+ */
+var Piece = React.createClass({displayName: "Piece",
   	getInitialState:function(){
 			return {piece:0}; //piece:0-没有棋子,1-黑子,2-白子
 	},
@@ -118,36 +166,25 @@ var Piece = React.createClass({
   			style = "white";
   		}
 	    return (
-	      	<td className={style} onClick={this.putPiece}></td>
+	      	React.createElement("td", {className: style, onClick: this.putPiece})
 	    );
   	}
 });
-/**
- * 棋盘
- */
-var ChessDesk = React.createClass({
-	/* 生成棋子 */
+var ChessDesk = React.createClass({displayName: "ChessDesk",
 	getInitialState: function(){
 		var tr=[];
 		var num = 0;
 		for(var i=0; i<15; i++){
 			var td=[];
 			for(var j=0; j<15; j++){
-				td.push(<Piece ref={num} key={num} x={i} y={j} nextStep={this.AIStep} calcWinner={this.calcWinner}/>);
+				td.push(React.createElement(Piece, {ref: num, key: num, x: i, y: j, nextStep: this.AIStep, calcWinner: this.calcWinner}));
 				num++;
 			}
 			tr.push(td);
 		}
-		return {pieces: tr};
+		return {desk: tr};
 	},
-	/* 重置棋盘 */
-	resetPieces: function(){
-		for(var i=0; i<15*15; i++){
-			this.refs[i].setState({piece:0});
-		}
-	},
-	/* 计算输赢 */
-	calcWinner: function(x, y){ 
+	calcWinner: function(x, y){ /*计算输赢*/
 		// 根据落子坐标取出所有有关赢法
 		var relateWin = wins[x][y];
 		if(step==1){
@@ -158,13 +195,11 @@ var ChessDesk = React.createClass({
 			var opposite = blackWins;
 		}
 		// 遍历相关赢法的分数
-		var that = this;
 		relateWin.map(function(value,index){
 			current[value]++;
 			opposite[value]=6; 		
 			if(current[value]==5){
 				playing = false;
-				that.props.theEnd();
 				alert(player[step]+" win! Game over.");
 				return;
 			}
@@ -172,86 +207,40 @@ var ChessDesk = React.createClass({
 		//切换下一步玩家落子状态
 		step = step%2+1; 
 	},
-	/* 计算机落子 */
 	AIStep: function(){
 		if(!playing) return;
-		var point = this.calcPoint(); // 计算落子
+		var point = calcPoint(); // 计算落子
 		// 落子
 		var x = point.x;
 		var y = point.y;
 		var num = x*15+y;
 		var that = this;
 		var piece = this.refs[num];
-		piece.setState({piece:step},function(){
-			setDesk(x,y);	// 在棋盘上添加一个棋子
-			that.calcWinner(x,y); // 落子成功，计算输赢
-		});
-	},
-	/* 计算最佳落子位置 */
-	calcPoint: function(){ 
-		resetScore();
-		if(step==1){
-			var current = blackWins;
-			var opposite = whiteWins;
+		if(piece.state.piece==0){
+			piece.setState({piece:step},function(){
+				setDesk(x,y);	// 在棋盘上添加一个棋子
+				that.calcWinner(x,y); // 落子成功，计算输赢
+			});
 		}else{
-			var current = whiteWins;
-			var opposite = blackWins;
+			console.log("ERROR");
 		}
-		var max = 0;
-		var x=y=7;
-		for(var i=0;i<15;i++){
-			for(var j=0;j<15;j++){
-				if(desk[i][j]==0){
-					var currentScore = 0;
-					var oppositeScore = 0;
-					wins[i][j].map(function(value,index){
-						switch(current[value]){
-							case 1: currentScore += 1; break;
-							case 2: currentScore += 10; break;
-							case 3: currentScore += 200; break;
-							case 4: currentScore += 2000; break;
-							default: break;
-						}
-						switch(opposite[value]){
-							case 1: oppositeScore += 1; break;
-							case 2: oppositeScore += 10; break;
-							case 3: oppositeScore += 100; break;
-							case 4: oppositeScore += 1000; break;
-							default: break;
-						}
-					});
-					console.log(currentScore+'  '+oppositeScore);
-					if(currentScore>max){
-						max = currentScore;
-						x = i;
-						y = j;
-					}
-					if(oppositeScore>max){
-						max = oppositeScore;
-						x = i;
-						y = j;
-					}
-				}
-			}
-		}
-		return {x:x, y:y};
 	},
 	render: function(){
-		var pieces = this.state.pieces;
+		var desk = this.state.desk;
 		return (
-			<div className="desk" id="desk">
-				<table>
-					<tbody>
-						{pieces.map(function(tds, index) {
+			React.createElement("div", {className: "desk", id: "desk"}, 
+				React.createElement("table", null, 
+					React.createElement("tbody", null, 
+						desk.map(function(tds, index) {
 							return (
-								<tr key={index}>
-									{tds}
-								</tr>
+								React.createElement("tr", {key: index}, 
+									tds
+								)
 							);
-						})}
-					</tbody>
-				</table>
-			</div>
+						})
+					)
+				)
+			)
 		);
 	}
 });
@@ -259,7 +248,7 @@ var ChessDesk = React.createClass({
 /**
  * 左侧状态栏
  */
-var Player = React.createClass({
+var Player = React.createClass({displayName: "Player",
 	render: function(){
 		var color;
 		if(this.props.piece == 1){
@@ -268,11 +257,11 @@ var Player = React.createClass({
 			color = 'white';
 		}
 		return (
-			<p></p>
+			React.createElement("p", null)
 		);
 	}	
 });
-var Players = React.createClass({
+var Players = React.createClass({displayName: "Players",
 	getInitialState() {
 	    return {first: ''};
 	},
@@ -296,11 +285,11 @@ var Players = React.createClass({
 			var notice = first+' first.';
 		}
 		return (
-			<div className="info" id="info">
-				<Player identity={"Computer"} piece={this.state.computer} />
-				<Player identity={"Your"} piece={this.state.you} />
-				<p>{notice}</p>
-			</div>
+			React.createElement("div", {className: "info", id: "info"}, 
+				React.createElement(Player, {identity: "Computer", piece: this.state.computer}), 
+				React.createElement(Player, {identity: "Your", piece: this.state.you}), 
+				React.createElement("p", null, notice)
+			)
 		);
 	}	
 });
@@ -308,71 +297,58 @@ var Players = React.createClass({
 /**
  * 右侧聊天栏
  */
-var Chat = React.createClass({
+var Chat = React.createClass({displayName: "Chat",
 	render: function(){
 		return (
-			<div className="talk" id="chat"></div>
+			React.createElement("div", {className: "talk", id: "chat"})
 		);
 	}
 });
 /**
  * 控制按钮
  */
-var Controller = React.createClass({
+var Controller = React.createClass({displayName: "Controller",
 	getInitialState() {
-	    return {status:'end',text:'开 始'};
+	    return {status:''};
 	},
 	start: function(){
-		if(this.state.status=='end'){
-			this.setState({status:'playing',text:'游戏中'}, function(){
+		if(this.state.status==''){
+			this.setState({status:'disabled'}, function(){
 				playing = true;
 				this.props.start();
 			});
 		}
 	},	
-	theEnd: function(){
-		this.setState({status: 'end', text: '再 来'});
-	},
 	render: function(){
-		var status = this.state.status;
-		var text = this.state.text;
 		return (
-			<div className="controller">
-				<div className={"start "+status} onClick={this.start}><span>{text}</span></div>
-			</div>
+			React.createElement("div", {className: "controller"}, 
+				React.createElement("div", {className: "start "+this.state.status, onClick: this.start}, React.createElement("span", null, "开 始"))
+			)
 		);
 	}
 });
-
 /**
  * 整个房间
  */
-var Room = React.createClass({
+var Room = React.createClass({displayName: "Room",
 	getInitialState() {
 	    return {test: 'test'};
 	},
 	computerFirst: function(){
 		this.refs.desk.AIStep();
 	},
-	theEnd: function(){
-		this.refs.controller.theEnd();
-	},
 	start: function(){
-		step = 1;
-		resetDesk();
-		resetWinsState();
-		this.refs.desk.resetPieces();
 		this.refs.player.initPlayer();
 	},
 	render: function(){
 		return (
-			<div>
-				<Players ref="player" computerFirst={this.computerFirst}/>
-				<ChessDesk ref="desk" key={"desk"} theEnd={this.theEnd} />
-				<Chat ref="chat" />
-				<div className="clearfix"></div>
-				<Controller ref="controller" start={this.start}/>
-			</div>
+			React.createElement("div", null, 
+				React.createElement(Players, {ref: "player", computerFirst: this.computerFirst}), 
+				React.createElement(ChessDesk, {ref: "desk", key: "desk"}), 
+				React.createElement(Chat, {ref: "chat"}), 
+				React.createElement("div", {className: "clearfix"}), 
+				React.createElement(Controller, {ref: "controller", start: this.start})
+			)
 		);
 	}
 });
@@ -380,6 +356,6 @@ var Room = React.createClass({
  * 渲染界面
  */
 ReactDOM.render(
-	<Room />,
+	React.createElement(Room, null),
 	document.getElementById('chess')
 );
