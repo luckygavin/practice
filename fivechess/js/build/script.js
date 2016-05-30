@@ -153,7 +153,7 @@ var ChessDesk = React.createClass({displayName: "ChessDesk",
 	calcWinner: function(x, y){ 
 		// 给当前落子加个标记
 		var now = x*15+y;
-		if(this.state.prev){
+		if(this.state.prev!=undefined){
 			this.refs[this.state.prev].setState({now:false});
 		}
 		this.setState({prev:now});
@@ -206,39 +206,44 @@ var ChessDesk = React.createClass({displayName: "ChessDesk",
 			var current = whiteWins;
 			var opposite = blackWins;
 		}
-		var max = 0;
+		var max = {score:0, sum:0};
 		var x=y=7;
 		for(var i=0;i<15;i++){
 			for(var j=0;j<15;j++){
 				if(desk[i][j]==0){
-					var currentScore = 0;
-					var oppositeScore = 0;
+					var myScore = 0;
+					var opScore = 0;
 					wins[i][j].map(function(value,index){
 						switch(current[value]){
-							case 1: currentScore += 1; break;
-							case 2: currentScore += 10; break;
-							case 3: currentScore += 200; break;
-							case 4: currentScore += 2000; break;
+							case 1: myScore += 1; break;
+							case 2: myScore += 12; break;
+							case 3: myScore += 120; break;
+							case 4: myScore += 1200; break;
 							default: break;
 						}
 						switch(opposite[value]){
-							case 1: oppositeScore += 1; break;
-							case 2: oppositeScore += 10; break;
-							case 3: oppositeScore += 100; break;
-							case 4: oppositeScore += 1000; break;
+							case 1: opScore += 1; break;
+							case 2: opScore += 10; break;
+							case 3: opScore += 100; break;
+							case 4: opScore += 1000; break;
 							default: break;
 						}
 					});
-					console.log(currentScore+'  '+oppositeScore);
-					if(currentScore>max){
-						max = currentScore;
+					// console.log(myScore+'  '+opScore);
+					var larger = myScore>opScore ? myScore : opScore;
+					var thisSum = myScore+opScore;
+					if(larger>max.score){
+						max.score = larger;
+						max.sum = thisSum;
 						x = i;
 						y = j;
-					}
-					if(oppositeScore>max){
-						max = oppositeScore;
-						x = i;
-						y = j;
+					}else if(larger==max.score){
+						if(thisSum>max.sum){
+							max.score = larger;
+							max.sum = thisSum;
+							x = i;
+							y = j;
+						}
 					}
 				}
 			}
@@ -308,7 +313,7 @@ var Players = React.createClass({displayName: "Players",
 			React.createElement("div", {className: "info", id: "info"}, 
 				React.createElement(Player, {identity: "Computer", piece: this.state.computer}), 
 				React.createElement(Player, {identity: "Your", piece: this.state.you}), 
-				React.createElement("p", null, notice)
+				React.createElement("p", {className: "tip"}, notice)
 			)
 		);
 	}	
@@ -320,7 +325,7 @@ var Players = React.createClass({displayName: "Players",
 var Chat = React.createClass({displayName: "Chat",
 	render: function(){
 		return (
-			React.createElement("div", {className: "talk", id: "chat"})
+			React.createElement("div", {className: "chat", id: "chat"})
 		);
 	}
 });
@@ -402,8 +407,8 @@ var Room = React.createClass({displayName: "Room",
 		return (
 			React.createElement("div", null, 
 				React.createElement(Players, {ref: "player", computerFirst: this.computerFirst}), 
-				React.createElement(ChessDesk, {ref: "desk", key: "desk", theEnd: this.theEnd}), 
 				React.createElement(Chat, {ref: "chat"}), 
+				React.createElement(ChessDesk, {ref: "desk", key: "desk", theEnd: this.theEnd}), 
 				React.createElement("div", {className: "clearfix"}), 
 				React.createElement(Controller, {ref: "controller", start: this.start}), 
 				React.createElement(Mask, {ref: "mask"})

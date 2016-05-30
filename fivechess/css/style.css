@@ -1,8 +1,8 @@
 body{height:100%;}
 body h1{text-align:center;line-height:120px;}
 #chess{width:960px;margin:0 auto;}
-#chess .desk{float:left;height:535px;width:535px;background: url("../images/bg.jpg") no-repeat;}
-#chess .desk table{margin:7px 0 0 6px;}
+#chess .desk{height:535px;width:535px;margin:0 auto;background: url("../images/bg.jpg") no-repeat;}
+#chess .desk table{position:relative;top:7px;margin:0 6px;/*这里为什么不能只用margin呢，外边距会超出父DIV是什么鬼，父元素要设置成inline-block又是什么鬼*/}
 #chess .desk table td{display:inline-block;content:"";height:33px;width:33px;text-align:center;margin-right:2px;}
 #chess .desk table td:last-child{margin:0;}
 #chess .desk table td.white{background: url("../images/w.png") no-repeat;}
@@ -10,7 +10,8 @@ body h1{text-align:center;line-height:120px;}
 #chess .desk table td.white.now{background: url("../images/w_n.png") no-repeat;}
 #chess .desk table td.black.now{background: url("../images/b_n.png") no-repeat;}
 #chess .info{float:left;height:535px;width:200px;background:#fff;}
-#chess .chat{float:left;height:535px;width:200px;background:#fff;}
+#chess .info .tip{text-align:center;}
+#chess .chat{float:right;height:535px;width:200px;background:#fff;margin-left:-200px;}
 #chess .controller{width:100px;margin:20px auto;}
 #chess .controller .start{cursor:pointer;background-color:#FF4F4F;color: #fff;text-align:center;padding:10px;border-radius:16px;}
 #chess .controller .start:hover{opacity:0.6;}
