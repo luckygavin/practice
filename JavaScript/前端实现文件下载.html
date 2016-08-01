@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>issssssw</title>
+</head>
+<body>
+<a id="download" href="#">下载</a>
+</body>
+<script>
+(function(){
+    var data = "这里可以放很多数据！~";
+    var htmlParts = [data];
+    var myBlob = new Blob(htmlParts, {'type': 'text\/txt'});
+    var a = document.getElementById("download");    
+    a.href = window.URL.createObjectURL(myBlob);
+    a.download = 'my-data.txt';
+})();
+</script>
+</html>
