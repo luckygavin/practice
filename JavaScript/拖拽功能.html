@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="language" content="zh_cn"/>
+    <title>TEST</title>
+    <script type="text/javascript" src="./jquery-1.11.3.js"></script>
+    <style type="text/css">
+        * {text-align: center; line-height: 40px;}
+        .idc {width: 200px; height: 200px; color: #fff; background-color: #ccc; position: absolute;}
+        .ant-modal-header { background-color: #aaa; cursor: move; height: 40px;}
+    </style>
+    </head>
+    <body>
+        <div class="idc">
+            <div class="ant-modal-header">drag header</div>
+            <div>body</div>
+        </div>
+        <div class="idc">
+            <div class="ant-modal-header">drag header</div>
+            <div>body</div>
+        </div>
+        <script type="text/javascript">
+            let x,y;
+            $(document).on('mousedown', '.idc',function(e){
+                e = e || event;
+                let ele = e.target.parentNode;
+                x = e.clientX - ele.offsetLeft;
+                y = e.clientY - ele.offsetTop;
+                document.onmousemove = function(e){
+                    e = e || event;
+                    ele.style.left = e.clientX - x + 'px';
+                    ele.style.top = e.clientY - y + 'px';
+                };
+                document.onmouseup = function(){
+                    document.onmousemove = null
+                }
+            });
+        </script>
+    </body>
+</html>
