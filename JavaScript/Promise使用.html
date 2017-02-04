@@ -1,0 +1,36 @@
+<html>
+<head>
+    <title>Promises使用</title>
+</head>
+<body>
+    <div id="result"></div>
+    <script type="text/javascript">
+    /* demo 1 */
+    new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+            resolve();
+        }, 1000);
+    }).then(()=>{
+        console.log('finish!');
+    });
+
+    /* demo 2 */
+    function send(num, delay) {
+        return new Promise((resolve, reject)=>{
+            setTimeout(()=>{
+                console.log('send time', num, ':', delay);
+                resolve();
+            }, delay);
+        });
+    }
+    let promise = new Promise(resolve=>resolve());
+    for (let i = 1; i <= 5; i++) {
+        promise = promise.then(send.bind(null, i, 1000));
+    }
+    // 所有请求队列执行完成
+    promise.then(()=>{
+        // 完成后的逻辑
+    });
+    </script>
+</body>
+</html>
